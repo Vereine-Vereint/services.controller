@@ -1,0 +1,4 @@
+[submodule "core"]
+	path = core
+	url = git@github.com:Vereine-Vereint/service.core.git
+	branch = main
