@@ -67,6 +67,7 @@ cmd_add() {
 commands+=([reset]=":Reset all services to the services repo")
 cmd_reset() {
   echo "Resetting all services..."
+  git pull
   git submodule foreach --recursive "git reset --hard"
   git submodule update --init --recursive
 }
@@ -74,12 +75,14 @@ cmd_reset() {
 commands+=([update]=":Update all services to the latest commit on main of each service")
 cmd_update() {
   echo "Pulling all services..."
+  git pull
   git submodule foreach "git checkout main && git pull && git submodule update --init --recursive"
 }
 
 commands+=([update-all]=":Update all services and submodules of services to the latest commit on main of each service")
 cmd_update-all() {
   echo "Pulling all services and submodules..."
+  git pull
   git submodule foreach --recursive "git checkout main && git pull"
 }
 
