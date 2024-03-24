@@ -86,5 +86,11 @@ cmd_update-all() {
   git submodule foreach --recursive "git checkout main && git pull"
 }
 
+commands+=([backup]=":Backup all services using borg")
+cmd_backup() {
+  echo "Backing up all services..."
+  git submodule foreach "./service.sh borg backup auto"
+}
+
 # EXECUTION
 main "$@"
