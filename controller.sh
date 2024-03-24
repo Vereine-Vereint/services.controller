@@ -1,3 +1,4 @@
+#!/bin/bash
 CONTROLLER_VERSION="v0.1"
 
 CONTROLLER_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
@@ -61,6 +62,16 @@ cmd_add() {
   printf "\n### $service_name [documentation](./$service_name/README.md)\n" >> README.md
 
   echo "[ OK ] Service added: $service_name"
+}
+
+commands+=([update]=":Update all services")
+cmd_update() {
+  git submodule update --init --recursive
+}
+
+commands+=([pull]=":Pull all services to the latest commit on main")
+cmd_pull() {
+  git submodule foreach "git checkout main && git pull && git submodule update --init --recursive"
 }
 
 # EXECUTION
