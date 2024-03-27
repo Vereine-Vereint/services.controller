@@ -45,6 +45,12 @@ main() {
 commands+=([add]="<github url>:Add a new service")
 cmd_add() {
   local url="$1"
+  # check url is not empty
+  if [[ -z $url ]]; then
+    echo "Usage: add <github url>"
+    exit 1
+  fi
+
   # check url is in ssh format, not https
   if [[ $url == "https://"* ]]; then
     echo "Please use the ssh format for the git url"
