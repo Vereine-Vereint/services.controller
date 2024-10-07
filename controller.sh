@@ -1,5 +1,5 @@
 #!/bin/bash
-CONTROLLER_VERSION="v0.1"
+CONTROLLER_VERSION="v0.2"
 
 CONTROLLER_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 SERVICES_DIR=$(cd -- "$(dirname -- "$CONTROLLER_DIR")" &>/dev/null && pwd)
@@ -70,26 +70,27 @@ cmd_add() {
   echo "[ OK ] Service added: $service_name"
 }
 
-commands+=([reset]=":Reset all services to the services repo")
-cmd_reset() {
+commands+=([update]=":Update all services to the services repo")
+cmd_update() {
   echo "Resetting all services..."
-  git pull
-  git submodule foreach --recursive "git reset --hard"
+  git restore . && git pull
+  git submodule foreach --recursive "git restore . && git reset --hard"
   git submodule update --init --recursive
 }
 
-commands+=([update]=":Update all services to the latest commit on main of each service")
-cmd_update() {
+commands+=([update-services]=":Update all services to the latest commit on main of each service")
+cmd_update-services() {
   echo "Pulling all services..."
-  git pull
+  git restore . && git pull
+  git submodule foreach --recursive "git restore . && git reset --hard"
   git submodule foreach "git checkout main && git pull && git submodule update --init --recursive"
 }
 
 commands+=([update-all]=":Update all services and submodules of services to the latest commit on main of each service")
 cmd_update-all() {
   echo "Pulling all services and submodules..."
-  git pull
-  git submodule foreach --recursive "git checkout main && git pull"
+  git restore . && git pull
+  git submodule foreach --recursive "git restore . && git checkout main && git pull"
 }
 
 commands+=([backup]=":Backup all services using borg")
