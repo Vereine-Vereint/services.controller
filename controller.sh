@@ -73,24 +73,24 @@ cmd_add() {
 commands+=([update]=":Update all services to the services repo")
 cmd_update() {
   echo "Resetting all services..."
-  git restore . && git clean -fd && git pull
-  git submodule foreach --recursive "git restore . && git clean -fd && git reset --hard"
+  git fetch --all && git restore . && git clean -fd && git checkout main && git pull
+  git submodule foreach --recursive "git fetch --all && git restore . && git pull && git clean -fd && git reset --hard"
   git submodule update --init --recursive
 }
 
 commands+=([update-services]=":Update all services to the latest commit on main of each service")
 cmd_update-services() {
   echo "Pulling all services..."
-  git restore . && git clean -fd && git pull
-  git submodule foreach --recursive "git restore . && git clean -fd && git reset --hard"
-  git submodule foreach "git checkout main && git pull && git submodule update --init --recursive"
+  git fetch --all && git restore . && git clean -fd && git checkout main && git pull
+  git submodule foreach --recursive "git fetch --all && git restore . && git pull && git clean -fd && git reset --hard"
+  git submodule foreach "git checkout main && git checkout main && git pull && git submodule update --init --recursive"
 }
 
 commands+=([update-all]=":Update all services and submodules of services to the latest commit on main of each service")
 cmd_update-all() {
   echo "Pulling all services and submodules..."
-  git restore . && git clean -fd && git pull
-  git submodule foreach --recursive "git restore . && git clean -fd && git checkout main && git pull"
+  git fetch --all && git restore . && git clean -fd && git checkout main && git pull
+  git submodule foreach --recursive "git fetch --all && git restore . && git clean -fd && git checkout main && git checkout main && git pull"
 }
 
 commands+=([backup]=":Backup all services using borg")
