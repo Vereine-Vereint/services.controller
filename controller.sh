@@ -42,7 +42,7 @@ main() {
 }
 
 # COMMANDS
-commands+=([add]="<github url>:Add a new service")
+commands+=([add]="<github url> (<folder name>):Add a new service")
 cmd_add() {
   local url="$1"
   # check url is not empty
@@ -50,14 +50,18 @@ cmd_add() {
     echo "Usage: add <github url>"
     exit 1
   fi
-
   # check url is in ssh format, not https
   if [[ $url == "https://"* ]]; then
     echo "Please use the ssh format for the git url"
     exit 1
   fi
+
   local service_name=$(basename $url | cut -d '.' -f 2)
-  
+  if [[ ! -z "$2" ]]; then
+    service_name="$2"
+  fi
+  echo "Adding service: to $service_name"
+
   # clone the repo
   git submodule add $url $service_name
   cd $service_name
